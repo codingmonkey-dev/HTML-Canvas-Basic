@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 실습</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 HTML Canvas 실습</h1>
+            <p>이론 교재와 함께 단계별로 Canvas를 학습해보세요!</p>
+        </header>
+
+        <div class="practice-section">
+            <h2>1. Canvas 기본 설정</h2>
+            <canvas id="canvas1" width="400" height="200"></canvas>
+            <button onclick="practice1()">실습 1 실행</button>
+        </div>
+
+        <div class="practice-section">
+            <h2>2. 기본 도형 그리기</h2>
+            <canvas id="canvas2" width="600" height="300"></canvas>
+            <button onclick="practice2()">실습 2 실행</button>
+        </div>
+
+        <div class="practice-section">
+            <h2>3. 경로(Path) 시스템</h2>
+            <canvas id="canvas3" width="500" height="300"></canvas>
+            <button onclick="practice3()">실습 3 실행</button>
+        </div>
+
+        <div class="practice-section">
+            <h2>4. 텍스트 처리</h2>
+            <canvas id="canvas4" width="600" height="250"></canvas>
+            <button onclick="practice4()">실습 4 실행</button>
+        </div>
+
+        <div class="practice-section">
+            <h2>5. 변형(Transform)</h2>
+            <canvas id="canvas5" width="500" height="400"></canvas>
+            <button onclick="practice5()">실습 5 실행</button>
+        </div>
+
+        <div class="practice-section">
+            <h2>6. 애니메이션 기초</h2>
+            <canvas id="canvas6" width="600" height="300"></canvas>
+            <div class="controls">
+                <button onclick="startAnimation()">애니메이션 시작</button>
+                <button onclick="stopAnimation()">애니메이션 정지</button>
+            </div>
+        </div>
+
+        <div class="practice-section">
+            <h2>7. 이벤트 처리</h2>
+            <canvas id="canvas7" width="500" height="300"></canvas>
+            <p class="instruction">캔버스를 클릭하거나 마우스를 움직여보세요!</p>
+        </div>
+
+    </div>
+
+    <!-- 기본적으로 실습용 코드 로드 -->
+    <script id="main-script" src="script.js"></script>
+    
+    <script>
+        function switchScript() {
+            const selectedScript = document.querySelector('input[name="script"]:checked').value;
+            const scriptElement = document.getElementById('main-script');
+            
+            // 모든 캔버스 초기화
+            document.querySelectorAll('canvas').forEach(canvas => {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+            
+            // 스크립트 교체
+            scriptElement.src = selectedScript + '.js';
+        }
+    </script>
+</body>
+</html>
