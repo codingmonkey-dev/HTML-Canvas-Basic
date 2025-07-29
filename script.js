@@ -348,7 +348,7 @@ function stopAnimation() {
     }
 }
 
-// ===== 실습 7: 이벤트 처리 =====
+// ===== 섹션 7. 이벤트 처리 =====
 function setupEventHandlers() {
     const canvas = document.getElementById('canvas7');
     const ctx = canvas.getContext('2d');
@@ -364,102 +364,36 @@ function setupEventHandlers() {
         };
     }
     
-    // 1. 클릭 이벤트 처리
+    // 클릭 이벤트 처리
     canvas.addEventListener('click', function(event) {
         const coords = getCanvasCoordinates(canvas, event);
         
-        // 클릭 위치 저장
+        // 클릭 위치에 원 추가
         clickedCircles.push({
             x: coords.x,
             y: coords.y,
-            color: `hsl(${Math.random() * 360}, 70%, 60%)`,
-            time: Date.now()
+            color: `hsl(${Math.random() * 360}, 70%, 60%)`
         });
         
-        // 오래된 원들 제거 (5초 후)
-        const now = Date.now();
-        clickedCircles = clickedCircles.filter(circle => now - circle.time < 5000);
-        
-        // 클릭된 원들 다시 그리기
-        redrawClickedCircles();
+        // 모든 원 다시 그리기
+        redrawCircles();
     });
     
-    function redrawClickedCircles() {
-        // 이전 원들만 지우지 않고 전체를 다시 그리기 위해
-        // 마우스 이벤트에서 처리하도록 플래그 설정
-        canvas.dispatchEvent(new MouseEvent('mousemove', {
-            clientX: canvas.getBoundingClientRect().left + canvas.width / 2,
-            clientY: canvas.getBoundingClientRect().top + canvas.height / 2
-        }));
-    }
-    
-    // 2. 마우스 움직임 이벤트 처리
-    canvas.addEventListener('mousemove', function(event) {
-        const coords = getCanvasCoordinates(canvas, event);
-        
+    function redrawCircles() {
         // 화면 지우기
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // 클릭된 원들 다시 그리기
+        // 클릭된 원들 그리기
         clickedCircles.forEach(circle => {
             ctx.beginPath();
-            ctx.arc(circle.x, circle.y, 15, 0, Math.PI * 2);
+            ctx.arc(circle.x, circle.y, 20, 0, Math.PI * 2);
             ctx.fillStyle = circle.color;
             ctx.fill();
             ctx.strokeStyle = '#2c3e50';
             ctx.lineWidth = 2;
             ctx.stroke();
         });
-        
-        // 마우스 따라다니는 원
-        ctx.beginPath();
-        ctx.arc(coords.x, coords.y, 30, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(52, 152, 219, 0.5)';
-        ctx.fill();
-        ctx.strokeStyle = '#3498db';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        
-        // 중심에서 마우스까지 선 그리기
-        ctx.beginPath();
-        ctx.moveTo(canvas.width / 2, canvas.height / 2);
-        ctx.lineTo(coords.x, coords.y);
-        ctx.strokeStyle = '#34495e';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        
-        // 중심점 표시
-        ctx.beginPath();
-        ctx.arc(canvas.width / 2, canvas.height / 2, 5, 0, Math.PI * 2);
-        ctx.fillStyle = '#e74c3c';
-        ctx.fill();
-        
-        // 좌표 정보 표시
-        ctx.fillStyle = '#2c3e50';
-        ctx.font = '14px Arial';
-        ctx.fillText(`마우스: (${Math.round(coords.x)}, ${Math.round(coords.y)})`, 10, 20);
-        ctx.fillText(`거리: ${Math.round(Math.sqrt(Math.pow(coords.x - canvas.width/2, 2) + Math.pow(coords.y - canvas.height/2, 2)))}px`, 10, 40);
-        
-        if (clickedCircles.length > 0) {
-            ctx.fillText(`클릭한 원의 개수: ${clickedCircles.length}`, 10, 280);
-        }
-    });
-    
-    // 3. 더블클릭으로 화면 초기화
-    canvas.addEventListener('dblclick', function() {
-        clickedCircles = [];
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#95a5a6';
-        ctx.font = '16px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('화면이 초기화되었습니다', canvas.width / 2, canvas.height / 2);
-        ctx.textAlign = 'left';
-        
-        setTimeout(() => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }, 1000);
-    });
+    }
 }
 
 // 페이지 로드 시 이벤트 핸들러 설정
